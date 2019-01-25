@@ -46,6 +46,19 @@ class SeleniumMiddlewareTestCase(TestCase):
 
         mw.driver.close()
 
+    def test_from_crawler_method_should_initialize_the_grid(self):
+        """"""
+        self.settings.update({
+            'SELENIUM_REMOTE_URL': 'http://localhost:4444/wd/hub'
+        })
+        crawler = get_crawler(Spider, self.settings)
+        mw = SeleniumMiddleware.from_crawler(crawler)
+
+        mw.driver.get('http://www.python.org')
+        self.assertIn('Python', mw.driver.title)
+
+        mw.driver.close()
+
     def test_spider_closed_should_close_the_driver(self):
         """Test that the ``spider_closed`` method should close the driver"""
 
